@@ -1,0 +1,18 @@
+{
+  "name": "bookhub",
+  "version": "0.1.0",
+  "description": "BookHub: IT 도서 분류 및 스터디 대여 관리 시스템",
+  "main": "app.js",
+  "scripts": {
+    "start": "node init-db.js && node app.js",
+    "reset-db": "node init-db.js --reset"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mysql2": "^3.24.5"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
