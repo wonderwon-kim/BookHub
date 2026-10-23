@@ -1,18 +1,22 @@
 {
   "name": "bookhub",
-  "version": "0.1.0",
-  "description": "BookHub: IT 도서 분류 및 스터디 대여 관리 시스템",
+  "version": "1.0.0",
+  "description": "IT 도서 분류 및 스터디 대여 관리 시스템 (Apple Design System)",
   "main": "app.js",
   "scripts": {
-    "start": "node init-db.js && node app.js",
-    "reset-db": "node init-db.js --reset"
+    "start": "node app.js",
+    "init-db": "node init_db.js"
   },
+  "keywords": [
+    "express",
+    "mysql",
+    "book-management",
+    "library",
+    "apple-design"
+  ],
   "dependencies": {
-    "express": "^5.2.1",
-    "mysql2": "^3.24.5"
-  },
-  "private": true,
-  "engines": {
-    "node": ">=18"
+    "express": "^4.19.2",
+    "mysql2": "^3.9.7",
+    "sanitize-html": "^2.13.0"
   }
 }
