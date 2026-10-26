@@ -22,21 +22,35 @@ const mysql = require('mysql2');
 // [수업 코드 기반]: MySQL DB 연결 설정
 // [수업 코드 외 추가·변경]: 로컬 MySQL 및 온라인 클라우드 DB 모두 호환되도록 환경변수 폴백 지원
 // ==============================================================================
-const db = mysql.createConnection({
-  host     : process.env.DB_HOST || 'localhost',
-  user     : process.env.DB_USER || 'root',
-  password : process.env.DB_PASSWORD || '1234',
-  database : process.env.DB_NAME || 'bookhub',
-  port     : process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
-  ssl      : process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined
+// Pool handles reconnects and prevents the app from reusing a permanently closed
+// single connection after a transient network/database failure.
+const db = mysql.createPool({
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '1234',
+  database: process.env.DB_NAME || 'bookhub',
+  port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+  waitForConnections: true,
+  connectionLimit: Number(process.env.DB_CONNECTION_LIMIT) || 5,
+  queueLimit: 0,
+  enableKeepAlive: true,
+  connectTimeout: 15000
 });
 
-db.connect((err) => {
+// Verify connectivity at startup without keeping a dedicated connection open.
+db.getConnection((err, connection) => {
   if (err) {
-    console.error('❌ MySQL 연결 실패:', err.message);
-  } else {
-    console.log('✔ MySQL 연결 성공! BookHub IT 도서 대여 관리 시스템 가동 준비 완료.');
+    console.error('❌ MySQL 초기 연결 실패:', err.code || err.message);
+    console.error('환경변수 DB_HOST, DB_PORT, DB_USER, DB_NAME, DB_SSL 및 Aiven 접근 허용 목록을 확인하세요.');
+    return;
   }
+  connection.release();
+  console.log('✔ MySQL 연결 성공! BookHub IT 도서 대여 관리 시스템 가동 준비 완료.');
+});
+
+db.on('error', (err) => {
+  console.error('❌ MySQL pool error:', err.code || err.message);
 });
 
 // [수업 코드 기반]: 폼 데이터 수신 미들웨어
