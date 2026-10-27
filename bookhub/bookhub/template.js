@@ -1,13 +1,13 @@
 // ==============================================================================
 // [template.js] BookHub: IT 도서 분류 및 스터디 대여 관리 시스템 뷰 모듈
-// [디자인 레퍼런스]: Apple Design System (Refero Styles: https://styles.refero.design/style/a73148b9-449b-42cd-9f38-86ef694f500e)
+// [디자인 레퍼런스]: Warm editorial design system — cream canvas, coral actions, serif display, dark product surfaces.
 // [수업 코드 기반]: template.js의 html, menu, create, update, delete, read 구조 계승
 // [수업 코드 외 추가·변경]: 3개 테이블 다중 JOIN 테크 스펙 뷰, GROUP BY 실시간 통계 랭킹, 완독 진도율 미니멀 프로그레스 바
-// [생성형 AI 활용]: Apple SF Pro 감성의 고해상도 미니멀리즘 디자인 시스템 (SF Pro 타이포, 필 버튼, 글래스 블러 헤더)
+// [UI 시스템]: Editorial serif headings, Inter body/UI, restrained borders, warm surfaces, and responsive navigation.
 // ==============================================================================
 
 module.exports = {
-  // [수업 코드 기반] + [생성형 AI 활용]: Apple 공식 미니멀 디자인 시스템 기본 레이아웃
+  // [UI 시스템]: Shared warm-canvas layout, serif display typography, coral actions, and dark product surfaces.
   html: function (menu, body, activePath = '/') {
     return `<!DOCTYPE html>
 <html lang="ko">
@@ -190,7 +190,7 @@ footer{margin-top:auto;padding:40px 32px 30px;background:var(--surface-dark);col
 </style>
 </head>
 <body>
-  <!-- Apple-Style Frosted Glass Header -->
+  <!-- Warm cream navigation -->
   <header class="apple-nav">
     <a href="/" class="nav-brand">
       <div class="nav-brand-logo">B</div>
@@ -352,7 +352,7 @@ footer{margin-top:auto;padding:40px 32px 30px;background:var(--surface-dark);col
   },
 
   // [수업 코드 기반]: 수업시간 template.read(teacher) 확장
-  // [수업 코드 외 추가·변경] + [생성형 AI 활용]: Apple Tech Specs 스타일 3개 테이블 다중 JOIN 화면
+  // Joined rental record detail with a dark product surface and reading progress.
   read: function (r) {
     const percent = Math.min(100, Math.round((r.read_pages / r.total_pages) * 100)) || 0;
     const d = new Date(r.rental_date);
@@ -471,7 +471,7 @@ footer{margin-top:auto;padding:40px 32px 30px;background:var(--surface-dark);col
   },
 
   // [수업 코드 기반]: 수업시간 template.create(offices) 확장
-  // [생성형 AI 활용]: Apple 인터페이스 스타일의 미니멀 폼
+  // Warm editorial rental form.
   create: function (books, preselectedBookId) {
     let bookOptions = '<option value="">-- 대여할 IT 도서를 선택하세요 --</option>';
     for (let i = 0; i < books.length; i++) {
@@ -650,7 +650,7 @@ footer{margin-top:auto;padding:40px 32px 30px;background:var(--surface-dark);col
     `;
   },
 
-  // [수업 코드 외 추가·변경] + [생성형 AI 활용]: Apple 감성 메인 대시보드 화면
+  // BookHub dashboard with cream metrics and a dark activity surface.
   home: function (kpi, recentRentals, topBooks) {
     const badge = (status) => {
       if (status === '반납 완료') return '<span class="badge-pill badge-returned">반납 완료</span>';
@@ -672,7 +672,7 @@ footer{margin-top:auto;padding:40px 32px 30px;background:var(--surface-dark);col
         </div>
       </div>
 
-      <!-- Apple KPI Cards -->
+      <!-- Summary metrics -->
       <div class="kpi-grid">
         <div class="kpi-card">
           <div class="kpi-label">구비 전공 도서</div>
