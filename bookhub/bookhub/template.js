@@ -1,13 +1,13 @@
 // ==============================================================================
 // [template.js] BookHub: IT 도서 분류 및 스터디 대여 관리 시스템 뷰 모듈
-// [디자인 레퍼런스]: Warm editorial design system — cream canvas, coral actions, serif display, dark product surfaces.
+// [디자인 레퍼런스]: Warm editorial design system — cream canvas, coral actions, handwritten display, dark product surfaces.
 // [수업 코드 기반]: template.js의 html, menu, create, update, delete, read 구조 계승
 // [수업 코드 외 추가·변경]: 3개 테이블 다중 JOIN 테크 스펙 뷰, GROUP BY 실시간 통계 랭킹, 완독 진도율 미니멀 프로그레스 바
-// [UI 시스템]: Editorial serif headings, Inter body/UI, restrained borders, warm surfaces, and responsive navigation.
+// [UI 시스템]: Korean handwritten display headlines, Inter body/UI, restrained borders, warm surfaces, and responsive navigation.
 // ==============================================================================
 
 module.exports = {
-  // [UI 시스템]: Shared warm-canvas layout, serif display typography, coral actions, and dark product surfaces.
+  // [UI 시스템]: Shared warm-canvas layout, Korean handwritten display typography, coral actions, and dark product surfaces.
   html: function (menu, body, activePath = '/') {
     return `<!DOCTYPE html>
 <html lang="ko">
