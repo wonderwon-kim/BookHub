@@ -182,7 +182,12 @@ footer{margin-top:auto;padding:40px 32px 30px;background:var(--surface-dark);col
 @media(max-width:420px){.apple-layout{width:calc(100% - 24px)}.kpi-grid{grid-template-columns:minmax(0,1fr)}.kpi-card{padding:18px}.apple-content>div[style*="justify-content: space-between"]{align-items:flex-start!important}.btn-pill{min-height:40px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 
-  </style>
+  
+@media(max-width:767px){
+ .nav-links li.mobile-extra-heading{margin-top:18px;padding-top:22px;border-top:1px solid var(--border-subtle);color:var(--text-tertiary);font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase}
+ .nav-links a.mobile-extra-link{min-height:40px;padding:8px 10px;border:0;border-radius:8px;background:var(--surface-soft);color:var(--text-secondary);font-size:14px}
+}
+</style>
 </head>
 <body>
   <!-- Apple-Style Frosted Glass Header -->
@@ -195,9 +200,9 @@ footer{margin-top:auto;padding:40px 32px 30px;background:var(--surface-dark);col
     <button class="mobile-menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primary-navigation"><span></span></button>
     <ul class="nav-links" id="primary-navigation">
       <li><a href="/" class="${activePath === '/' ? 'active' : ''}">홈</a></li>
-      <li><a href="/books" class="${activePath === '/books' ? 'active' : ''}">도서 목록</a></li>
+      <li><a href="/books" class="${activePath.startsWith('/books') ? 'active' : ''}">도서 목록</a></li>
       <li><a href="/book/create" class="${activePath === '/book/create' ? 'active' : ''}">도서 등록</a></li>
-      <li><a href="/category" class="${activePath === '/category' ? 'active' : ''}">분야</a></li>
+      <li><a href="/category" class="${activePath.startsWith('/category') ? 'active' : ''}">분야</a></li>
       <li><a href="/stats" class="${activePath === '/stats' ? 'active' : ''}">통계</a></li>
       <li><a href="/create" class="btn-pill btn-primary btn-sm">+ 대여 등록</a></li>
     </ul>
@@ -230,6 +235,27 @@ footer{margin-top:auto;padding:40px 32px 30px;background:var(--surface-dark);col
       const toggle = document.querySelector('.mobile-menu-toggle');
       const navigation = document.querySelector('#primary-navigation');
       if (!toggle || !navigation) return;
+
+      // Preserve access to recent rental records and row-level actions on mobile.
+      const sourceLinks = Array.from(document.querySelectorAll('.apple-sidebar a'));
+      const extraLinks = sourceLinks.filter(link => {
+        const href = link.getAttribute('href');
+        return href && !Array.from(navigation.querySelectorAll('a')).some(item => item.getAttribute('href') === href);
+      });
+      if (extraLinks.length) {
+        const heading = document.createElement('li');
+        heading.className = 'mobile-extra-heading';
+        heading.textContent = '빠른 작업 · 최근 대여';
+        navigation.appendChild(heading);
+        extraLinks.forEach(link => {
+          const item = document.createElement('li');
+          const clone = link.cloneNode(true);
+          clone.className = 'mobile-extra-link';
+          item.appendChild(clone);
+          navigation.appendChild(item);
+        });
+      }
+
       const closeMenu = () => {
         navigation.classList.remove('is-open');
         toggle.setAttribute('aria-expanded', 'false');
