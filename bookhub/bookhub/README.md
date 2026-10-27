@@ -1,33 +1,23 @@
 # 📖 BookHub — IT Library & Study Rental System
 
-> **Apple Design System 기반의 IT 도서 분류 및 스터디 대여 관리 풀스택 웹 애플리케이션**  
-> 실전 IT 전공 서적 196권 메타데이터 스크래핑 및 3개 테이블 정규화 구조 기반 CRUD & 실시간 통계 시스템
+> **전공 도서 탐색·대여 기록·독서 진도를 관리하는 풀스택 웹 애플리케이션**  
+> 196권의 IT 전공 도서 메타데이터와 3개 테이블 정규화 구조 기반 CRUD 및 통계 시스템
 
 ---
 
 ## 🌟 프로젝트 개요
 
-**BookHub**는 실습실과 개인 서가에 흩어져 있는 다양한 IT 전공 도서(웹 개발, 데이터베이스, 알고리즘, 인공지능, 네트워크, 컴퓨터 구조 등)를 체계적으로 분류하고, 학생들의 대여 이력과 독서 완독 진도를 한눈에 관리할 수 있도록 구축된 관계형 데이터베이스(RDBMS) 연동 웹 서비스입니다.
+**BookHub**는 웹 개발, 데이터베이스, 알고리즘, 인공지능, 네트워크, 컴퓨터 구조 등 IT 전공 도서를 체계적으로 분류하고, 대여 이력과 독서 진도를 한곳에서 관리하는 관계형 데이터베이스(RDBMS) 연동 웹 서비스입니다.
 
-- **디자인 레퍼런스**: [Apple Style Reference (Refero Styles)](https://styles.refero.design/style/a73148b9-449b-42cd-9f38-86ef694f500e)
-- **핵심 기술 스택**: Node.js, Express, MySQL 8.0, HTML5/CSS3 (Vanilla Modern Template), Python Web Scraping
+- **UI 방향**: 따뜻한 크림 캔버스, 코랄 액션, 세리프 디스플레이 타이포그래피, 짙은 제품 표면을 조합한 에디토리얼 인터페이스
+- **핵심 기술 스택**: Node.js, Express, MySQL 8.0, HTML5/CSS3, Python Web Scraping
 
----
+## 🎨 UI 구성
 
-## 🎨 디자인 시스템 (Apple Design System)
-
-Apple 특유의 하이엔드 미니멀리즘과 세련된 타이포그래피 시스템을 충실히 반영했습니다:
-
-- **Typography**: Apple SF Pro Text & Display 계열 폰트 스택 및 네거티브 트래킹(`letter-spacing: -0.02em`)
-- **Color Palette**:
-  - Background: Apple Signature Off-White (`#f5f5f7`)
-  - Surface Card: Pure White (`#ffffff`), Subtle Border (`#e5e5e7`, `#d2d2d7`)
-  - Text: Dark Slate (`#1d1d1f`), Secondary Gray (`#86868b`)
-  - Accent: Apple Signature Blue (`#0071e3`, Hover `#0077ed`)
-- **Components**:
-  - 반투명 블러 글래스 글로벌 네비게이션 (`backdrop-filter: blur(20px)`)
-  - 애플 시그니처 캡슐 필 버튼 (`border-radius: 980px`)
-  - 18px 라운드 카드 및 Apple Tech Specs 스타일의 **3개 테이블 다중 JOIN 대여 증서 카드**
+- **색상**: 캔버스 `#faf9f5`, 크림 카드 `#efe9de`, 잉크 `#141413`, 코랄 액션 `#cc785c`, 다크 표면 `#181715`
+- **타이포그래피**: 디스플레이 제목은 세리프 계열, 본문과 UI는 Inter 계열 폰트 사용
+- **공통 구성요소**: 상단 내비게이션, 빠른 작업 사이드바, 상태 배지, 테이블, 검색·필터 폼, 독서 진도 표시
+- **화면 대응**: 데스크톱·태블릿·모바일 레이아웃과 전체 화면 모바일 메뉴 지원
 
 ---
 
@@ -80,7 +70,7 @@ Apple 특유의 하이엔드 미니멀리즘과 세련된 타이포그래피 시
 - `INSERT INTO rental_log (borrower, book_id, rental_days, read_pages, rating, status, review, rental_date) VALUES (?, ?, ?, ?, 5.0, ?, ?, NOW());`
 
 ### 2. [만점 핵심] 3개 테이블 다중 JOIN 상세 조회 (Read)
-- `rental_log`, `book`, `category` 3개 테이블을 한 번의 쿼리로 결합하여 대여 학생, 도서 상세 스펙, 기술 분야 설명이 통합된 Apple Tech Specs 스타일 대여 증서 렌더링
+- `rental_log`, `book`, `category` 3개 테이블을 한 번의 쿼리로 결합하여 대여 학생, 도서 상세 스펙, 기술 분야 설명이 통합된 어두운 에디토리얼 대여 증서 스타일 대여 증서 렌더링
 - 실제 읽은 페이지 수 대비 전체 분량에 따른 **완독 진도율(%) 프로그레스 바** 실시간 계산
 ```sql
 SELECT 
@@ -126,7 +116,7 @@ ORDER BY total_rentals DESC, avg_rating DESC;
 ```
 20105 project/
 ├── app.js            # Express 서버 및 라우팅 컨트롤러
-├── template.js       # Apple Design System 뷰 렌더링 템플릿 모듈 (HTML 100% 분리)
+├── template.js       # Warm Editorial UI 뷰 렌더링 템플릿 모듈 (HTML 100% 분리)
 ├── init_db.js        # MySQL 데이터베이스 초기화 및 196권 실전 도서 적재 스크립트
 ├── init.sql          # 복사/붙여넣기 가능한 무결성 전체 SQL 스키마 및 DML 덤프
 ├── package.json      # 프로젝트 의존성 설정 (express, mysql2, sanitize-html)
