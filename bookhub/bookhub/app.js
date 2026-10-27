@@ -424,6 +424,6 @@ app.get('/:id', (req, res) => {
 app.listen(port, () => {
   console.log(`======================================================`);
   console.log(`🚀 BookHub 서버가 포트 ${port}에서 정상 실행되었습니다!`);
-  console.log(`👉 브라우저 접속: http://localhost:${port}`);
+  console.log(`HTTP 서버가 포트 ${port}에서 수신 중입니다.`);
   console.log(`======================================================`);
 });
