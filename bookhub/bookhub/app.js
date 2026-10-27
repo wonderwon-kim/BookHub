@@ -49,6 +49,14 @@ db.getConnection((err, connection) => {
   console.log('✔ MySQL 연결 성공! BookHub IT 도서 대여 관리 시스템 가동 준비 완료.');
 });
 
+db.on('connection', (connection) => {
+  // Handle fatal connection errors (including rejected Aiven credentials) so a
+  // failed DB handshake is logged instead of becoming an unhandled EventEmitter error.
+  connection.on('error', (err) => {
+    console.error('❌ MySQL connection error:', err.code || err.message);
+  });
+});
+
 db.on('error', (err) => {
   console.error('❌ MySQL pool error:', err.code || err.message);
 });
