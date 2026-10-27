@@ -7,13 +7,19 @@ const sanitizeHtml = require('sanitize-html');
 const mysql = require('mysql2');
 
 // MySQL 연결 설정 - 수업자료 방식
+// 접속 정보는 코드에 직접 지정하고, 비밀번호만 Render의 환경변수로 관리합니다.
 const db = mysql.createConnection({
   host: 'bookhub-davidbackhome1004-8836.e.aivencloud.com',
   user: 'avnadmin',
-  password: 'YOUR_AIVEN_PASSWORD',
+  password: process.env.DB_PASSWORD || '',
   database: 'bookhub',
   port: 22582,
   ssl: { rejectUnauthorized: false }
+});
+
+// 인증 실패 등 DB 연결 오류가 발생해도 Node 프로세스가 비정상 종료되지 않도록 처리
+db.on('error', (err) => {
+  console.error('MySQL 연결 오류:', err.code || err.message);
 });
 
 // DB 연결 확인
@@ -23,7 +29,7 @@ db.connect((err) => {
     return;
   }
 
-  console.log('MySQL 연결 성공!');
+  console.log('MySQL 연결 성공! (database: bookhub)');
 });
 
 // 폼 데이터 수신
