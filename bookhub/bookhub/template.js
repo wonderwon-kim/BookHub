@@ -17,7 +17,7 @@ module.exports = {
   <meta name="theme-color" content="#faf9f5">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Cormorant+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <title>BookHub — IT Library & Study Hub</title>
   <style>
 
@@ -41,8 +41,8 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg-pri
 ::selection{background:rgba(204,120,92,.2)}
 :focus-visible{outline:3px solid rgba(204,120,92,.34);outline-offset:3px}
 a{color:var(--accent);text-underline-offset:3px}
-h1,h2,h3,.hero-title,.display-serif{font-family:"Cormorant Garamond","Tiempos Headline","Noto Serif KR","Batang",Georgia,serif;font-weight:400!important;letter-spacing:-.035em;color:var(--text-primary)}
-h1,.hero-title{font-size:clamp(2rem,3.2vw,2.85rem);line-height:1.12}
+h1,h2,h3,.hero-title,.display-serif{font-family:"Nanum Pen Script","UnPen","UnPenheulim",cursive;font-weight:400!important;letter-spacing:0;color:var(--text-primary)}
+h1,.hero-title{font-size:clamp(2.3rem,3.6vw,3.1rem);line-height:1.22}
 h2{font-size:clamp(1.65rem,2.3vw,2.25rem);line-height:1.18}
 h3{font-size:1.3rem;line-height:1.35}
 p{line-height:1.65}
@@ -80,7 +80,7 @@ p{line-height:1.65}
 .sidebar-ol li a.selected{background:var(--surface-cream-strong);color:var(--text-primary)}
 .sidebar-ol li a:hover{color:var(--text-primary)}
 .apple-content{min-width:0;min-height:0;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none}
-.hero-title{margin:0 0 10px;font-size:clamp(2.1rem,3.3vw,2.75rem);font-weight:400!important;letter-spacing:-.04em;line-height:1.1}
+.hero-title{margin:0 0 10px;font-size:clamp(2.6rem,4vw,3.25rem);font-weight:400!important;letter-spacing:0;line-height:1.2}
 .hero-subtitle{max-width:720px;margin:0 0 32px;color:var(--text-secondary);font-size:15px;line-height:1.7}
 .apple-content h3{font-weight:500}
 .apple-content>div[style*="justify-content: space-between"]{gap:24px;flex-wrap:wrap}
