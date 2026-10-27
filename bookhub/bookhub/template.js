@@ -482,6 +482,175 @@ module.exports = {
       font-size: 0.78rem;
       margin-top: auto;
     }
+  
+    /* =============================================================
+       BookHub Design Refresh — responsive Apple-inspired system
+       Existing routes, form names, and template APIs remain unchanged.
+       ============================================================= */
+    html { scroll-behavior: smooth; }
+    body {
+      background:
+        radial-gradient(ellipse at 8% 0%, rgba(0, 113, 227, 0.055), transparent 34%),
+        var(--bg-primary);
+    }
+    a, button, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+    ::selection { background: rgba(0, 113, 227, 0.18); }
+    :focus-visible { outline: 3px solid rgba(0, 113, 227, 0.38); outline-offset: 3px; }
+
+    .apple-nav {
+      height: 64px;
+      min-height: 64px;
+      padding: 0 clamp(16px, 4vw, 52px);
+      gap: 24px;
+      box-shadow: 0 6px 24px rgba(29, 29, 31, 0.035);
+    }
+    .nav-brand { flex-shrink: 0; }
+    .nav-brand-logo {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: linear-gradient(145deg, #101012, #38383c);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    }
+    .nav-links { gap: clamp(10px, 1.6vw, 24px); }
+    .nav-links a { white-space: nowrap; transition: color .18s ease, opacity .18s ease; }
+    .nav-links a:not(.active):hover { color: var(--accent); }
+
+    .apple-layout {
+      max-width: 1460px;
+      margin: 28px auto;
+      padding: 0 clamp(14px, 3.5vw, 36px);
+      grid-template-columns: 248px minmax(0, 1fr);
+      gap: clamp(18px, 2vw, 28px);
+      align-items: start;
+    }
+    .apple-sidebar {
+      border-radius: 22px;
+      padding: 22px 16px;
+      border-color: rgba(229, 229, 231, 0.9);
+      box-shadow: 0 8px 28px rgba(29, 29, 31, 0.035);
+    }
+    .sidebar-link {
+      padding: 9px 12px;
+      margin-bottom: 3px;
+      border-radius: 11px;
+    }
+    .sidebar-link:hover { transform: translateX(2px); }
+    .sidebar-link.active { box-shadow: inset 3px 0 0 var(--accent); }
+    .apple-content {
+      min-width: 0;
+      padding: clamp(24px, 3vw, 44px);
+      border-radius: 24px;
+      border-color: rgba(229, 229, 231, 0.9);
+      box-shadow: 0 8px 30px rgba(29, 29, 31, 0.035);
+    }
+    .hero-title {
+      font-size: clamp(1.65rem, 2.2vw, 2.1rem);
+      line-height: 1.16;
+      letter-spacing: -0.04em;
+    }
+    .hero-subtitle { max-width: 760px; line-height: 1.65; }
+
+    .kpi-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 185px), 1fr));
+      gap: 14px;
+    }
+    .kpi-card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(150deg, #fff 20%, #fbfbfd 100%);
+      border-radius: 18px;
+      padding: 21px;
+      box-shadow: 0 2px 8px rgba(29, 29, 31, 0.018);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      border-color: #cbdcf0;
+      box-shadow: 0 9px 22px rgba(29, 29, 31, 0.055);
+    }
+    .kpi-val { font-size: clamp(1.8rem, 2.4vw, 2.25rem); font-variant-numeric: tabular-nums; }
+
+    .apple-table-wrap {
+      max-width: 100%;
+      overflow-x: auto;
+      border-radius: 15px;
+      border-color: #e7e7eb;
+      scrollbar-width: thin;
+    }
+    table.apple-table { min-width: 680px; }
+    table.apple-table th { padding: 13px 16px; white-space: nowrap; }
+    table.apple-table td { padding: 15px 16px; }
+    table.apple-table tbody tr { transition: background-color .15s ease; }
+    table.apple-table tr:hover td { background: #f7faff; }
+
+    .btn-pill {
+      min-height: 34px;
+      transition: transform .15s ease, background-color .15s ease, box-shadow .15s ease;
+    }
+    .btn-pill:active { transform: scale(.98); }
+    .btn-primary { box-shadow: 0 2px 5px rgba(0, 113, 227, 0.13); }
+    .btn-primary:hover { box-shadow: 0 5px 14px rgba(0, 113, 227, 0.2); }
+    .form-input { min-height: 42px; border-color: #d8d8de; }
+    .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.11); }
+    .specs-card { border-radius: 22px; box-shadow: 0 5px 18px rgba(29, 29, 31, 0.025); }
+    .specs-box { border-radius: 16px; }
+    .apple-progress-bg { background: #e9e9ee; }
+    .apple-progress-fill { background: linear-gradient(90deg, #0071e3, #4ba2ff); }
+    footer { border-top-color: rgba(229, 229, 231, .9); }
+
+    @media (max-width: 1100px) {
+      .apple-nav { height: auto; min-height: 64px; padding-top: 12px; padding-bottom: 12px; flex-wrap: wrap; }
+      .nav-links { flex-wrap: wrap; justify-content: flex-end; gap: 10px 16px; }
+      .apple-layout { grid-template-columns: 220px minmax(0, 1fr); }
+      .apple-content { padding: 28px; }
+    }
+    @media (max-width: 860px) {
+      .apple-nav { align-items: flex-start; }
+      .nav-links { justify-content: flex-start; }
+      .apple-layout { grid-template-columns: minmax(0, 1fr); margin: 18px auto; }
+      .apple-sidebar { position: static; }
+      .sidebar-scroll-list { max-height: 150px; }
+      .apple-content { min-height: 0; }
+    }
+    @media (max-width: 600px) {
+      .apple-nav { padding: 12px 16px; gap: 12px; }
+      .nav-brand { width: 100%; }
+      .nav-links {
+        width: 100%;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        gap: 16px;
+        padding: 2px 0 5px;
+        scrollbar-width: none;
+      }
+      .nav-links::-webkit-scrollbar { display: none; }
+      .nav-links a { font-size: .8rem; }
+      .nav-brand-pill { font-size: .66rem; }
+      .apple-layout { padding: 0 12px; gap: 14px; }
+      .apple-sidebar { padding: 18px 14px; border-radius: 18px; }
+      .apple-content { padding: 22px 16px; border-radius: 18px; }
+      .hero-title { font-size: 1.65rem; }
+      .hero-subtitle { font-size: .9rem; margin-bottom: 22px; }
+      .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .kpi-card { padding: 15px 13px; border-radius: 14px; }
+      .kpi-label { font-size: .67rem; }
+      .kpi-val { font-size: 1.65rem; }
+      .kpi-desc { font-size: .7rem; line-height: 1.45; }
+      .specs-card { padding: 22px 16px; }
+      .specs-header { gap: 14px; flex-wrap: wrap; }
+      .specs-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+      .specs-box { padding: 17px; }
+      .form-container { max-width: none; }
+      .apple-content [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: minmax(0, 1fr) !important; }
+      footer { padding: 20px 14px; line-height: 1.6; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+
   </style>
 </head>
 <body>
