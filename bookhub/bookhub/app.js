@@ -30,7 +30,7 @@ const db = mysql.createPool({
   password: process.env.DB_PASSWORD || '1234',
   database: process.env.DB_NAME || 'bookhub',
   port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
-  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+  ssl: process.env.DB_SSL === 'true' ? (process.env.DB_SSL_CA ? { ca: process.env.DB_SSL_CA.replace(/\\n/g, '\n'), rejectUnauthorized: true } : { rejectUnauthorized: false }) : undefined,
   waitForConnections: true,
   connectionLimit: Number(process.env.DB_CONNECTION_LIMIT) || 5,
   queueLimit: 0,
