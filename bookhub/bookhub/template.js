@@ -1,502 +1,209 @@
 // ==============================================================================
 // [template.js] BookHub: IT 도서 분류 및 스터디 대여 관리 시스템 뷰 모듈
-// [디자인 레퍼런스]: Apple Design System (Refero Styles: https://styles.refero.design/style/a73148b9-449b-42cd-9f38-86ef694f500e)
+// [디자인 레퍼런스]: Warm editorial design system — cream canvas, coral actions, handwritten display, dark product surfaces.
 // [수업 코드 기반]: template.js의 html, menu, create, update, delete, read 구조 계승
 // [수업 코드 외 추가·변경]: 3개 테이블 다중 JOIN 테크 스펙 뷰, GROUP BY 실시간 통계 랭킹, 완독 진도율 미니멀 프로그레스 바
-// [생성형 AI 활용]: Apple SF Pro 감성의 고해상도 미니멀리즘 디자인 시스템 (SF Pro 타이포, 필 버튼, 글래스 블러 헤더)
+// [UI 시스템]: Korean handwritten display headlines, Inter body/UI, restrained borders, warm surfaces, and responsive navigation.
 // ==============================================================================
 
 module.exports = {
-  // [수업 코드 기반] + [생성형 AI 활용]: Apple 공식 미니멀 디자인 시스템 기본 레이아웃
+  // [UI 시스템]: Shared warm-canvas layout, Korean handwritten display typography, coral actions, and dark product surfaces.
   html: function (menu, body, activePath = '/') {
     return `<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#faf9f5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Cormorant+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <title>BookHub — IT Library & Study Hub</title>
   <style>
-    /* -------------------------------------------------------------
-       Apple Style Reference Tokens (Refero Styles Inspired)
-       ------------------------------------------------------------- */
-    :root {
-      --bg-primary: #f5f5f7;
-      --bg-surface: #ffffff;
-      --bg-surface-secondary: #fafafc;
-      --text-primary: #1d1d1f;
-      --text-secondary: #86868b;
-      --text-tertiary: #a1a1a6;
-      --accent: #0071e3;
-      --accent-hover: #0077ed;
-      --accent-subtle: #f0f7ff;
-      --border-subtle: #e5e5e7;
-      --border-strong: #d2d2d7;
-      --system-green: #34c759;
-      --system-green-subtle: #eafaf1;
-      --system-orange: #ff9500;
-      --system-orange-subtle: #fff6e8;
-      --system-red: #ff3b30;
-      --system-red-subtle: #fdedec;
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 18px;
-      --radius-pill: 980px;
-    }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Pretendard", "Helvetica Neue", Helvetica, Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
+:root {
+  --bg-primary:#faf9f5; --bg-surface:#faf9f5; --bg-surface-secondary:#f5f0e8;
+  --text-primary:#141413; --text-secondary:#6c6a64; --text-tertiary:#8e8b82;
+  --accent:#cc785c; --accent-hover:#a9583e; --accent-subtle:#efe9de;
+  --border-subtle:#e6dfd8; --border-strong:#d8cfc2;
+  --system-green:#5db872; --system-green-subtle:#e4f1e5;
+  --system-orange:#e8a55a; --system-orange-subtle:#f5e9d9;
+  --system-red:#c64545; --system-red-subtle:#f3e1dc;
+  --surface-soft:#f5f0e8; --surface-card:#efe9de; --surface-cream-strong:#e8e0d2;
+  --surface-dark:#181715; --surface-dark-elevated:#252320; --surface-dark-soft:#1f1e1b;
+  --on-primary:#fff; --on-dark:#faf9f5; --on-dark-soft:#a09d96; --accent-teal:#5db8a6; --accent-amber:#e8a55a;
+  --radius-sm:6px; --radius-md:8px; --radius-lg:12px; --radius-xl:16px; --radius-pill:9999px;
+}
+html{scroll-behavior:smooth;background:var(--bg-primary)}
+*,*::before,*::after{box-sizing:border-box}
+*{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg-primary);color:var(--text-primary);letter-spacing:0;line-height:1.55}
+::selection{background:rgba(204,120,92,.2)}
+:focus-visible{outline:3px solid rgba(204,120,92,.34);outline-offset:3px}
+a{color:var(--accent);text-underline-offset:3px}
+h1,h2,h3,.hero-title,.display-serif{font-family:"Nanum Pen Script","UnPen","UnPenheulim",cursive;font-weight:400!important;letter-spacing:0;color:var(--text-primary)}
+h1,.hero-title{font-size:clamp(2.3rem,3.6vw,3.1rem);line-height:1.22}
+h2{font-size:clamp(1.65rem,2.3vw,2.25rem);line-height:1.18}
+h3{font-size:1.3rem;line-height:1.35}
+p{line-height:1.65}
 
-    body {
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      letter-spacing: -0.015em;
-    }
+/* Warm cream top navigation with a typographic wordmark. */
+.apple-nav{position:sticky;top:0;z-index:1000;width:100%;height:64px;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 max(24px,calc((100vw - 1200px)/2));background:var(--bg-primary);border-bottom:1px solid var(--border-subtle)}
+.nav-brand{display:flex;align-items:center;gap:10px;flex-shrink:0;text-decoration:none;color:var(--text-primary)}
+.nav-brand-logo{width:28px;height:28px;display:grid;place-items:center;background:transparent;border-radius:0;color:var(--text-primary);font-size:0;font-weight:400}
+.nav-brand-logo::before{content:"✳";font-size:26px;line-height:1;color:var(--text-primary)}
+.nav-brand-text{font-size:1.04rem;line-height:1;font-weight:600;letter-spacing:-.035em}
+.nav-brand-pill{font-size:11px;line-height:1;letter-spacing:.06em;text-transform:uppercase;background:var(--surface-card);color:var(--text-secondary);padding:7px 9px;border-radius:9999px}
+.nav-links{list-style:none;display:flex;align-items:center;gap:clamp(12px,1.7vw,22px);margin:0;padding:0}
+.nav-links a{display:inline-flex;align-items:center;min-height:40px;color:var(--text-secondary);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap}
+.nav-links a.active{color:var(--text-primary)}
+.nav-links a.btn-primary{color:#fff}
+.nav-links a:hover{opacity:1}
+.mobile-menu-toggle{display:none;flex:0 0 40px;width:40px;height:40px;border:1px solid var(--border-subtle);border-radius:9999px;background:var(--bg-primary);color:var(--text-primary);align-items:center;justify-content:center;cursor:pointer}
+.mobile-menu-toggle span,.mobile-menu-toggle span::before,.mobile-menu-toggle span::after{display:block;width:16px;height:1.5px;background:currentColor;position:relative;content:""}
+.mobile-menu-toggle span::before{position:absolute;top:-5px}
+.mobile-menu-toggle span::after{position:absolute;top:5px}
 
-    /* Apple-style Frosted Glass Navigation Bar */
-    .apple-nav {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      height: 52px;
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 40px;
-    }
+/* Editorial workspace: open canvas, no white floating SaaS panel. */
+.apple-layout{flex:1;width:min(1200px,calc(100% - 64px));max-width:1200px;margin:40px auto 88px;padding:0;display:grid;grid-template-columns:224px minmax(0,1fr);align-items:start;gap:48px}
+.apple-sidebar{position:sticky;top:88px;height:fit-content;padding:24px 16px;background:var(--surface-soft);border:0;border-radius:var(--radius-lg);box-shadow:none}
+.sidebar-label{margin:22px 0 8px;padding:0 8px;color:var(--text-tertiary);font-size:11px;font-weight:600;letter-spacing:1.35px;text-transform:uppercase}
+.sidebar-label:first-child{margin-top:0}
+.sidebar-link{display:flex;align-items:center;justify-content:space-between;min-height:40px;margin:2px 0;padding:9px 10px;border-radius:8px;text-decoration:none;color:var(--text-secondary);font-size:13px;font-weight:500}
+.sidebar-link.active{background:var(--surface-cream-strong);color:var(--text-primary)}
+.sidebar-link:hover{background:transparent;color:var(--text-primary)}
+.sidebar-scroll-list{max-height:240px;overflow-y:auto;margin-top:6px;scrollbar-width:thin}
+.sidebar-scroll-list::-webkit-scrollbar{width:3px}
+.sidebar-scroll-list::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:3px}
+.sidebar-ol{list-style:none;padding:0;margin:0}
+.sidebar-ol li a{display:block;padding:7px 8px;border-radius:6px;color:var(--text-secondary);font-size:12px;line-height:1.5;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidebar-ol li a.selected{background:var(--surface-cream-strong);color:var(--text-primary)}
+.sidebar-ol li a:hover{color:var(--text-primary)}
+.apple-content{min-width:0;min-height:0;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none}
+.hero-title{margin:0 0 10px;font-size:clamp(2.6rem,4vw,3.25rem);font-weight:400!important;letter-spacing:0;line-height:1.2}
+.hero-subtitle{max-width:720px;margin:0 0 32px;color:var(--text-secondary);font-size:15px;line-height:1.7}
+.apple-content h3{font-weight:500}
+.apple-content>div[style*="justify-content: space-between"]{gap:24px;flex-wrap:wrap}
 
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-primary);
-    }
-    .nav-brand-logo {
-      width: 26px;
-      height: 26px;
-      background: #000;
-      color: #fff;
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
-    .nav-brand-text {
-      font-size: 1.05rem;
-      font-weight: 600;
-      letter-spacing: -0.025em;
-    }
-    .nav-brand-pill {
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: var(--radius-pill);
-      background: var(--border-subtle);
-      color: var(--text-secondary);
-      letter-spacing: 0;
-    }
+/* Cream metric and content cards; use color blocks rather than shadows. */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:36px 0 48px}
+.kpi-card{background:var(--surface-card);border:0;border-radius:var(--radius-lg);padding:24px 20px;box-shadow:none}
+.kpi-label{color:var(--text-secondary);font-size:11px;line-height:1.45;text-transform:uppercase;letter-spacing:1.1px;font-weight:600}
+.kpi-val{margin-top:12px;color:var(--text-primary);font-family:"Cormorant Garamond","Noto Serif KR",Georgia,serif;font-size:clamp(2.1rem,3vw,2.8rem);font-weight:400;line-height:1.05;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.kpi-desc{margin-top:10px;color:var(--text-secondary);font-size:12px;line-height:1.5}
+.specs-box{background:var(--surface-card);border:0;border-radius:var(--radius-lg);padding:24px;box-shadow:none}
+.specs-tag{margin-bottom:10px;color:var(--accent)!important;font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase}
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      list-style: none;
-    }
-    .nav-links a {
-      color: var(--text-primary);
-      text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 400;
-      opacity: 0.8;
-      transition: opacity 0.15s;
-    }
-    .nav-links a:hover {
-      opacity: 1;
-    }
-    .nav-links a.active {
-      opacity: 1;
-      font-weight: 600;
-      color: var(--accent);
-    }
+/* Dark product surface for joined rental details and reading progress. */
+.specs-card{--text-primary:#faf9f5;--text-secondary:#a09d96;--text-tertiary:#8e8b82;--bg-surface-secondary:#252320;--border-subtle:#393733;--accent:#cc785c;background:var(--surface-dark);color:var(--on-dark);border:0;border-radius:var(--radius-lg);padding:32px;box-shadow:none}
+.specs-card .specs-header{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;padding-bottom:24px;margin-bottom:24px;border-bottom:1px solid #393733}
+.specs-card .specs-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:28px}
+.specs-card .specs-box{background:var(--surface-dark-elevated);border:0;border-radius:8px;padding:22px}
+.specs-card h2,.specs-card h3{color:var(--on-dark)!important}
+.specs-card strong{color:var(--on-dark)}
+.specs-card .apple-progress-bg{background:#383632}
+.specs-card .apple-progress-fill{background:var(--accent)}
 
-    /* Main Container with 2-Column Grid */
-    .apple-layout {
-      max-width: 1360px;
-      width: 100%;
-      margin: 32px auto;
-      padding: 0 32px;
-      display: grid;
-      grid-template-columns: 290px 1fr;
-      gap: 28px;
-      flex: 1;
-    }
+/* Quiet tables with warm headers and fine dividers. */
+.apple-table-wrap{width:100%;max-width:100%;overflow-x:auto;margin-top:12px;border:1px solid var(--border-subtle);border-radius:var(--radius-lg);background:var(--bg-primary);scrollbar-width:thin}
+table.apple-table{min-width:640px;width:100%;border-collapse:collapse;text-align:left;font-size:13px}
+table.apple-table th{padding:14px 16px;background:var(--surface-soft);color:var(--text-secondary);font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;border-bottom:1px solid var(--border-subtle);white-space:nowrap}
+table.apple-table td{padding:15px 16px;color:var(--text-primary);border-bottom:1px solid var(--border-subtle);vertical-align:middle}
+table.apple-table tr:last-child td{border-bottom:0}
+table.apple-table tr:hover td{background:transparent}
+table.apple-table td strong{font-weight:500}
 
-    /* Sidebar (Apple Sidebar Navigation) */
-    .apple-sidebar {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 22px 18px;
-      height: fit-content;
-      position: sticky;
-      top: 84px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
-    }
-    .sidebar-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 8px;
-      margin-top: 18px;
-      padding-left: 8px;
-    }
-    .sidebar-label:first-child { margin-top: 0; }
+/* Shared interactions: coral primary, outlined secondary, no ornamental hover motion. */
+.btn-pill{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:11px 18px;border:1px solid transparent;border-radius:8px;font-size:13px;line-height:1.2;font-weight:500;text-decoration:none;cursor:pointer;transition:background-color .12s ease,color .12s ease}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:none}
+.btn-primary:hover{background:var(--accent);color:#fff;box-shadow:none}
+.btn-primary:active{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn-secondary{background:var(--bg-primary);border-color:var(--border-subtle);color:var(--text-primary)}
+.btn-secondary:hover{background:var(--bg-primary)}
+.btn-danger{background:var(--system-red);border-color:var(--system-red);color:#fff}
+.btn-danger:hover{background:var(--system-red)}
+.btn-sm{min-height:36px;padding:9px 13px;font-size:12px}
+.badge-pill{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:9999px;font-size:11px;font-weight:600;line-height:1.25;letter-spacing:.1px;white-space:nowrap}
+.badge-borrowed{background:var(--system-orange-subtle);color:#825326}
+.badge-returned{background:var(--system-green-subtle);color:#285f39}
+.badge-overdue{background:var(--system-red-subtle);color:#963b35}
+.badge-cat{background:var(--surface-card);color:var(--text-primary)}
+.form-container{width:100%;max-width:720px;margin:0 auto}
+.form-container>form{padding:32px;background:var(--surface-card);border-radius:var(--radius-lg)}
+.form-row{margin-bottom:20px}
+.form-label{display:block;margin-bottom:7px;color:var(--text-primary);font-size:13px;font-weight:500}
+.form-input{width:100%;min-height:42px;padding:10px 14px;background:var(--bg-primary);border:1px solid var(--border-subtle);border-radius:8px;color:var(--text-primary);font-size:14px;line-height:1.4;outline:none;box-shadow:none}
+.form-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(204,120,92,.15)}
+.form-input::placeholder{color:var(--text-tertiary)}
+textarea.form-input{min-height:120px;resize:vertical}
+select.form-input{cursor:pointer}
+.apple-progress-bg{width:100%;height:6px;margin-top:7px;overflow:hidden;border-radius:9999px;background:var(--surface-cream-strong)}
+.apple-progress-fill{height:100%;border-radius:inherit;background:var(--accent)}
+.empty-box{padding:48px 24px;text-align:center;background:var(--surface-soft);color:var(--text-secondary);border-radius:var(--radius-lg)}
+.empty-icon{margin-bottom:12px;font-size:2rem}
+.empty-title{margin-bottom:8px;font-size:1.1rem;font-weight:500;color:var(--text-primary)}
+.empty-desc{max-width:400px;margin:0 auto 20px;font-size:14px;line-height:1.65}
 
-    .sidebar-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 12px;
-      border-radius: var(--radius-md);
-      color: var(--text-primary);
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 500;
-      transition: background 0.15s ease;
-      margin-bottom: 2px;
-    }
-    .sidebar-link:hover {
-      background: var(--bg-primary);
-    }
-    .sidebar-link.active {
-      background: var(--accent-subtle);
-      color: var(--accent);
-      font-weight: 600;
-    }
+/* The home activity area is the dark product surface in the dashboard rhythm. */
+.dashboard-activity{margin-top:44px!important;padding:28px;background:var(--surface-dark);color:var(--on-dark);border-radius:var(--radius-lg)}
+.dashboard-activity h3,.dashboard-activity strong{color:var(--on-dark)!important}
+.dashboard-activity .apple-table-wrap{border:0;border-radius:8px;background:var(--surface-dark)}
+.dashboard-activity table.apple-table{min-width:620px}
+.dashboard-activity table.apple-table th{background:var(--surface-dark-soft);color:var(--on-dark-soft);border-color:#393733}
+.dashboard-activity table.apple-table td{color:var(--on-dark);border-color:#393733}
+.dashboard-activity .btn-secondary{background:var(--surface-dark-elevated);border-color:#393733;color:var(--on-dark)}
+.dashboard-activity .apple-progress-bg{background:#3a3833}
+.dashboard-activity .apple-progress-fill{background:var(--accent)}
+.dashboard-activity [style*="color: var(--text-secondary)"]{color:var(--on-dark-soft)!important}
 
-    /* Modern List in Sidebar (수업 코드 ol 호환) */
-    .sidebar-scroll-list {
-      max-height: 240px;
-      overflow-y: auto;
-      margin-top: 4px;
-    }
-    .sidebar-scroll-list::-webkit-scrollbar { width: 3px; }
-    .sidebar-scroll-list::-webkit-scrollbar-thumb { background: #d2d2d7; border-radius: 3px; }
-    .sidebar-ol { list-style: none; padding: 0; margin: 0; }
-    .sidebar-ol li a {
-      display: block;
-      padding: 6px 10px;
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-      text-decoration: none;
-      border-radius: var(--radius-sm);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: all 0.15s;
-    }
-    .sidebar-ol li a:hover {
-      background: var(--bg-primary);
-      color: var(--text-primary);
-    }
-    .sidebar-ol li a.selected {
-      background: var(--accent-subtle);
-      color: var(--accent);
-      font-weight: 600;
-    }
+/* Dark closing band. */
+footer{margin-top:auto;padding:40px 32px 30px;background:var(--surface-dark);color:var(--on-dark-soft);border:0;font-size:12px;line-height:1.65;text-align:left}
+.footer-inner{width:min(1200px,100%);margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:36px}
+.footer-brand{color:var(--on-dark);font-size:16px;font-weight:500;letter-spacing:-.03em}
+.footer-note{max-width:380px;margin-top:8px;color:var(--on-dark-soft)}
+.footer-links{display:flex;align-items:center;flex-wrap:wrap;gap:18px}
+.footer-links a{color:var(--on-dark);text-decoration:none;font-size:12px}
+.footer-meta{width:min(1200px,100%);margin:28px auto 0;padding-top:18px;border-top:1px solid #393733;color:var(--on-dark-soft)}
+@media(min-width:1440px){.apple-layout{margin-top:48px}}
+@media(max-width:1100px){.apple-nav{padding:0 24px;gap:16px}.nav-links{gap:12px}.apple-layout{width:calc(100% - 48px);grid-template-columns:190px minmax(0,1fr);gap:28px}.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:767px){
+ .apple-nav{height:64px;min-height:64px;padding:0 20px;justify-content:space-between}.nav-brand-pill{display:none}.mobile-menu-toggle{display:inline-flex;position:relative;z-index:1003}
+ .nav-links{position:fixed;inset:0;z-index:1002;width:100vw;height:100dvh;max-height:100dvh;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:8px;padding:100px 28px 32px;background:var(--bg-primary);overflow-y:auto;transform:translateX(100%);visibility:hidden;pointer-events:none;transition:transform .18s ease,visibility .18s ease}
+ .nav-links.is-open{transform:translateX(0);visibility:visible;pointer-events:auto}.nav-links li{width:100%}.nav-links a{width:100%;min-height:52px;padding:12px 0;justify-content:flex-start;color:var(--text-primary);font-size:20px;border-bottom:1px solid var(--border-subtle)}
+ .nav-links a.btn-primary{justify-content:center;margin-top:12px;padding:12px 20px;border-bottom:0;font-size:14px}
+ .apple-layout{width:calc(100% - 32px);display:block;margin:28px auto 56px}.apple-sidebar{display:none}.apple-content{width:100%}
+ .hero-title{font-size:clamp(2rem,9vw,2.4rem)}.hero-subtitle{margin-bottom:26px;font-size:14px}
+ .kpi-grid{gap:10px;margin:28px 0 34px}.kpi-card{padding:18px 14px}.kpi-val{font-size:2.15rem}.kpi-desc{font-size:11px}
+ .specs-card{padding:22px 16px}.specs-card .specs-grid{grid-template-columns:minmax(0,1fr)}.specs-card .specs-header{flex-direction:column}.specs-card .specs-header>div:last-child{align-self:flex-start}.specs-card .specs-box{padding:18px}
+ .form-container>form{padding:22px 16px}.dashboard-activity{padding:20px 14px;margin-top:32px!important}
+ .footer-inner{flex-direction:column;gap:22px}footer{padding:34px 20px 24px}.footer-links{gap:14px}
+ .apple-content [style*="grid-template-columns: 1fr 1fr"]{grid-template-columns:minmax(0,1fr)!important}
+}
+@media(max-width:420px){.apple-layout{width:calc(100% - 24px)}.kpi-grid{grid-template-columns:minmax(0,1fr)}.kpi-card{padding:18px}.apple-content>div[style*="justify-content: space-between"]{align-items:flex-start!important}.btn-pill{min-height:40px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 
-    /* Content Area */
-    .apple-content {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 36px 40px;
-      min-height: 640px;
-      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.02);
-    }
-
-    /* Typography & Headers */
-    .hero-title {
-      font-size: 1.85rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      letter-spacing: -0.03em;
-      line-height: 1.18;
-      margin-bottom: 8px;
-    }
-    .hero-subtitle {
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      line-height: 1.45;
-      margin-bottom: 28px;
-    }
-
-    /* Apple KPI Metrics Grid */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-    .kpi-card {
-      background: var(--bg-surface-secondary);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 20px 22px;
-      transition: border-color 0.2s;
-    }
-    .kpi-card:hover {
-      border-color: var(--border-strong);
-    }
-    .kpi-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-    .kpi-val {
-      font-size: 2.1rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-top: 6px;
-      letter-spacing: -0.03em;
-    }
-    .kpi-desc {
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      margin-top: 4px;
-    }
-
-    /* Apple Tables */
-    .apple-table-wrap {
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      margin-top: 14px;
-    }
-    table.apple-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.88rem;
-    }
-    table.apple-table th {
-      background: var(--bg-surface-secondary);
-      color: var(--text-secondary);
-      font-weight: 600;
-      padding: 12px 18px;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    table.apple-table td {
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--border-subtle);
-      color: var(--text-primary);
-      vertical-align: middle;
-    }
-    table.apple-table tr:last-child td {
-      border-bottom: none;
-    }
-    table.apple-table tr:hover td {
-      background: #fafafc;
-    }
-
-    /* Apple Signature Pill Buttons */
-    .btn-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 7px 18px;
-      border-radius: var(--radius-pill);
-      font-size: 0.84rem;
-      font-weight: 500;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      letter-spacing: -0.01em;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-    }
-    .btn-primary:hover {
-      background: var(--accent-hover);
-    }
-    .btn-secondary {
-      background: #e8e8ed;
-      color: var(--text-primary);
-    }
-    .btn-secondary:hover {
-      background: #dedee3;
-    }
-    .btn-danger {
-      background: var(--system-red);
-      color: #fff;
-    }
-    .btn-danger:hover {
-      background: #e02d24;
-    }
-    .btn-sm {
-      padding: 4px 12px;
-      font-size: 0.78rem;
-    }
-
-    /* Apple Minimal Badges */
-    .badge-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 9px;
-      border-radius: var(--radius-pill);
-      font-size: 0.74rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-    .badge-borrowed { background: var(--system-orange-subtle); color: #c05621; }
-    .badge-returned { background: var(--system-green-subtle); color: #22543d; }
-    .badge-overdue { background: var(--system-red-subtle); color: #9b2c2c; }
-    .badge-cat { background: var(--accent-subtle); color: var(--accent); font-weight: 600; }
-
-    /* Forms */
-    .form-container {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .form-row {
-      margin-bottom: 20px;
-    }
-    .form-label {
-      display: block;
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 6px;
-    }
-    .form-input {
-      width: 100%;
-      padding: 10px 14px;
-      background: #ffffff;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-md);
-      font-size: 0.9rem;
-      color: var(--text-primary);
-      outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .form-input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
-    }
-    textarea.form-input { min-height: 100px; resize: vertical; }
-
-    /* Apple Tech Specs Card (3-Table JOIN View) */
-    .specs-card {
-      background: #ffffff;
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 36px;
-      position: relative;
-    }
-    .specs-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 24px;
-      margin-bottom: 28px;
-    }
-    .specs-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-bottom: 28px;
-    }
-    .specs-box {
-      background: var(--bg-surface-secondary);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 22px;
-    }
-    .specs-tag {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
-    }
-
-    /* Progress bar */
-    .apple-progress-bg {
-      width: 100%;
-      height: 7px;
-      background: #e8e8ed;
-      border-radius: var(--radius-pill);
-      overflow: hidden;
-      margin-top: 6px;
-    }
-    .apple-progress-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: var(--radius-pill);
-      transition: width 0.3s;
-    }
-
-    /* Empty state */
-    .empty-box {
-      text-align: center;
-      padding: 48px 20px;
-      color: var(--text-secondary);
-    }
-    .empty-icon { font-size: 2.2rem; margin-bottom: 12px; }
-    .empty-title { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
-    .empty-desc { font-size: 0.88rem; max-width: 400px; margin: 0 auto 20px auto; line-height: 1.5; }
-
-    footer {
-      background: var(--bg-surface);
-      border-top: 1px solid var(--border-subtle);
-      padding: 24px;
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 0.78rem;
-      margin-top: auto;
-    }
-  </style>
+  
+@media(max-width:767px){
+ .nav-links li.mobile-extra-heading{margin-top:18px;padding-top:22px;border-top:1px solid var(--border-subtle);color:var(--text-tertiary);font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase}
+ .nav-links a.mobile-extra-link{min-height:40px;padding:8px 10px;border:0;border-radius:8px;background:var(--surface-soft);color:var(--text-secondary);font-size:14px}
+}
+</style>
 </head>
 <body>
-  <!-- Apple-Style Frosted Glass Header -->
+  <!-- Warm cream navigation -->
   <header class="apple-nav">
     <a href="/" class="nav-brand">
       <div class="nav-brand-logo">B</div>
       <span class="nav-brand-text">BookHub</span>
-      <span class="nav-brand-pill">IT Library System</span>
+      <span class="nav-brand-pill">Study Library</span>
     </a>
-    <ul class="nav-links">
-      <li><a href="/" class="${activePath === '/' ? 'active' : ''}">홈 대시보드</a></li>
-      <li><a href="/books" class="${activePath === '/books' ? 'active' : ''}">구비 도서</a></li>
-      <li><a href="/category" class="${activePath === '/category' ? 'active' : ''}">기술 분야</a></li>
-      <li><a href="/stats" class="${activePath === '/stats' ? 'active' : ''}">통계 랭킹</a></li>
+    <button class="mobile-menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primary-navigation"><span></span></button>
+    <ul class="nav-links" id="primary-navigation">
+      <li><a href="/" class="${activePath === '/' ? 'active' : ''}">홈</a></li>
+      <li><a href="/books" class="${activePath.startsWith('/books') ? 'active' : ''}">도서 목록</a></li>
+      <li><a href="/book/create" class="${activePath === '/book/create' ? 'active' : ''}">도서 등록</a></li>
+      <li><a href="/category" class="${activePath.startsWith('/category') ? 'active' : ''}">분야</a></li>
+      <li><a href="/stats" class="${activePath === '/stats' ? 'active' : ''}">통계</a></li>
       <li><a href="/create" class="btn-pill btn-primary btn-sm">+ 대여 등록</a></li>
     </ul>
   </header>
@@ -512,8 +219,59 @@ module.exports = {
   </div>
 
   <footer>
-    BookHub — Professional IT Library & Study Rental Management System &bull; Clean Architecture Database
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">✳ BookHub</div>
+        <p class="footer-note">읽고, 기록하고, 다시 이어가는 전공 도서 라이브러리.</p>
+      </div>
+      <nav class="footer-links" aria-label="푸터 메뉴">
+        <a href="/">홈</a><a href="/books">도서 목록</a><a href="/category">분야</a><a href="/stats">통계</a><a href="/create">대여 등록</a>
+      </nav>
+    </div>
+    <div class="footer-meta">BookHub · IT Library &amp; Study Rental</div>
   </footer>
+  <script>
+    (() => {
+      const toggle = document.querySelector('.mobile-menu-toggle');
+      const navigation = document.querySelector('#primary-navigation');
+      if (!toggle || !navigation) return;
+
+      // Preserve access to recent rental records and row-level actions on mobile.
+      const sourceLinks = Array.from(document.querySelectorAll('.apple-sidebar a'));
+      const extraLinks = sourceLinks.filter(link => {
+        const href = link.getAttribute('href');
+        return href && !Array.from(navigation.querySelectorAll('a')).some(item => item.getAttribute('href') === href);
+      });
+      if (extraLinks.length) {
+        const heading = document.createElement('li');
+        heading.className = 'mobile-extra-heading';
+        heading.textContent = '빠른 작업 · 최근 대여';
+        navigation.appendChild(heading);
+        extraLinks.forEach(link => {
+          const item = document.createElement('li');
+          const clone = link.cloneNode(true);
+          clone.className = 'mobile-extra-link';
+          item.appendChild(clone);
+          navigation.appendChild(item);
+        });
+      }
+
+      const closeMenu = () => {
+        navigation.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', '메뉴 열기');
+        document.body.style.overflow = '';
+      };
+      toggle.addEventListener('click', () => {
+        const isOpen = navigation.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+        toggle.setAttribute('aria-label', isOpen ? '메뉴 닫기' : '메뉴 열기');
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      });
+      navigation.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+    })();
+  </script>
 </body>
 </html>`;
   },
@@ -583,10 +341,9 @@ module.exports = {
       </div>
 
       <div style="margin-top: 18px; padding: 12px; background: var(--bg-surface-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5;">
-        <strong style="color: var(--text-primary);">수행평가 만점 설계</strong><br>
-        • 3개 테이블 다중 JOIN<br>
-        • COUNT, AVG, SUM 집계<br>
-        • HTML Template 100% 분리
+        <strong style="color: var(--text-primary);"><br>
+        <br>
+        <br>
       </div>
     `;
 
@@ -594,7 +351,7 @@ module.exports = {
   },
 
   // [수업 코드 기반]: 수업시간 template.read(teacher) 확장
-  // [수업 코드 외 추가·변경] + [생성형 AI 활용]: Apple Tech Specs 스타일 3개 테이블 다중 JOIN 화면
+  // Joined rental record detail with a dark product surface and reading progress.
   read: function (r) {
     const percent = Math.min(100, Math.round((r.read_pages / r.total_pages) * 100)) || 0;
     const d = new Date(r.rental_date);
@@ -713,7 +470,7 @@ module.exports = {
   },
 
   // [수업 코드 기반]: 수업시간 template.create(offices) 확장
-  // [생성형 AI 활용]: Apple 인터페이스 스타일의 미니멀 폼
+  // Warm editorial rental form.
   create: function (books, preselectedBookId) {
     let bookOptions = '<option value="">-- 대여할 IT 도서를 선택하세요 --</option>';
     for (let i = 0; i < books.length; i++) {
@@ -892,7 +649,7 @@ module.exports = {
     `;
   },
 
-  // [수업 코드 외 추가·변경] + [생성형 AI 활용]: Apple 감성 메인 대시보드 화면
+  // BookHub dashboard with cream metrics and a dark activity surface.
   home: function (kpi, recentRentals, topBooks) {
     const badge = (status) => {
       if (status === '반납 완료') return '<span class="badge-pill badge-returned">반납 완료</span>';
@@ -903,7 +660,7 @@ module.exports = {
     return `
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
         <div>
-          <h1 class="hero-title">BookHub Library Overview</h1>
+          <h1 class="hero-title">오늘의 도서관</h1>
           <p class="hero-subtitle" style="margin-bottom:0;">
             스크래핑된 196권의 IT 전공 서적과 학생들의 자율 스터디 대여 현황을 관리합니다.
           </p>
@@ -914,7 +671,7 @@ module.exports = {
         </div>
       </div>
 
-      <!-- Apple KPI Cards -->
+      <!-- Summary metrics -->
       <div class="kpi-grid">
         <div class="kpi-card">
           <div class="kpi-label">구비 전공 도서</div>
@@ -939,7 +696,7 @@ module.exports = {
       </div>
 
       <!-- Recent Rentals / Empty State -->
-      <div style="margin-top: 10px;">
+      <div class="dashboard-activity" style="margin-top: 10px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
           <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">
             최근 대여 및 학습 기록
