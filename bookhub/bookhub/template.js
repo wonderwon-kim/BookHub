@@ -583,10 +583,9 @@ module.exports = {
       </div>
 
       <div style="margin-top: 18px; padding: 12px; background: var(--bg-surface-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5;">
-        <strong style="color: var(--text-primary);">수행평가 만점 설계</strong><br>
-        • 3개 테이블 다중 JOIN<br>
-        • COUNT, AVG, SUM 집계<br>
-        • HTML Template 100% 분리
+        <strong style="color: var(--text-primary);"><br>
+        <br>
+        <br>
       </div>
     `;
 
