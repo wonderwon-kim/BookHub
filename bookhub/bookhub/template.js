@@ -341,7 +341,7 @@ footer{margin-top:auto;padding:40px 32px 30px;background:var(--surface-dark);col
       </div>
 
       <div style="margin-top: 18px; padding: 12px; background: var(--bg-surface-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5;">
-        <strong style="color: var(--text-primary);">수행평가 만점 설계</strong><br>
+        <strong style="color: var(--text-primary);"><br>
         <br>
         <br>
       </div>
